@@ -1,0 +1,28 @@
+<Configuration status="WARN" monitorInterval="30">
+    <Properties>
+        <Property name="filename">$${hostName}</Property>
+        <Property name="LOG_PATTERN">
+            %d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${hostName} --- [%15.15t]%l %-40.40c{10.} : %m%n%ex
+        </Property>
+    </Properties>
+    <Appenders>
+        <RollingFile name="Application" fileName="logs/control-bibliotecas.log" 
+                     filePattern="logs/archived/control-bibliotecas-%d{yyyy-MM-dd}-%i.gz">
+            <PatternLayout>
+                <Pattern>${LOG_PATTERN}</Pattern>
+            </PatternLayout>
+            <Policies>
+                <CronTriggeringPolicy schedule="0 0 0 1 * ? *" />
+		<SizeBasedTriggeringPolicy size="2 GB" />
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Root level="info"  includeLocation="true"> 
+            <AppenderRef ref="Application"/>
+        </Root>
+        <Logger name="com.lonner" level="error" additivity="true">
+        </Logger>
+    </Loggers>
+</Configuration>

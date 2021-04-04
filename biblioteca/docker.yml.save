@@ -1,0 +1,49 @@
+version: "2.4"
+services:
+  mariadb:
+    restart: always
+    container_name: mariadb-${AMBIENTE}
+    build: 
+      context: .
+      dockerfile: Mariadb/Dockerfile
+    mem_limit: 1g
+    healthcheck:
+      test: "/usr/bin/mysql --user=root --password=password --execute \"select 1+1 from DUAL;\""
+      interval: 20s
+      timeout: 20s
+      retries: 10
+    environment:
+      MARIADB_ROOT_PASSWORD: password
+    networks:
+      vortex:
+        ipv4_address: ${NETWORK_IP}2
+    volumes:
+      - /archivos/mariadb:/bitnami/mariadb
+    ports:
+      - "2121:3306"
+  configurador:
+    hostname: control-bibliotecas
+    restart: always
+    container_name: control-bibliotecas
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1G"
+    build:
+      context: .
+      dockerfile: biblioteca/Dockerfile
+      args:
+        - INIT_RAM=700m
+        - RAM_LIMIT=700m
+    mem_limit: 1G
+    volumes:
+     # - /archivos/logs/:/archivos/aplicaciones/configurador/logs
+    networks:
+      vortex:
+        ipv4_address: ${NETWORK_IP}6
+   depends_on:
+
+networks:
+  vortex:
+    external:
+      name: vortex

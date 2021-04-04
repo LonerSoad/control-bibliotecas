@@ -1,0 +1,3 @@
+INSERT INTO Libro (nombre,autor,editorial,numeroEdicion,numeroPaginas,libreriaId,ejemplaresDisponibles) VALUES ('El psicoAnalista','John Katzenbach','B DE BOLSILLO',1,528,1,15);
+INSERT INTO Libro (nombre,autor,editorial,numeroEdicion,numeroPaginas,libreriaId,ejemplaresDisponibles) VALUES ('El psicoAnalista','John Katzenbach','B DE BOLSILLO',1,528,2,34);
+INSERT INTO Libro (nombre,autor,editorial,numeroEdicion,numeroPaginas,libreriaId,ejemplaresDisponibles) VALUES ('Ilíada','Homero','Austral',1,464,1,1024);

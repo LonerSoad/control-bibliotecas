@@ -1,0 +1,5 @@
+database:
+   url: jdbc:mariadb://192.0.0.2:3306/controlLibrerias
+   user: root
+   password: jcpassword
+  

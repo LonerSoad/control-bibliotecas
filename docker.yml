@@ -1,0 +1,49 @@
+version: "2.4"
+services:
+  mariadb:
+    restart: always
+    container_name: mariadb
+    build: 
+      context: .
+      dockerfile: Mariadb/Dockerfile
+    mem_limit: 400m
+    healthcheck:
+      test: "/usr/bin/mysql --user=root --password=jcpassword --execute \"select 1+1 from DUAL;\""
+      interval: 20s
+      timeout: 20s
+      retries: 10
+    environment:
+      MARIADB_ROOT_PASSWORD: jcpassword
+    networks:
+      redControlBiblioteca:
+        ipv4_address: 192.0.0.2
+    volumes:
+      - /archivos/mariadb:/bitnami/mariadb
+    ports:
+      - "2121:3306"
+  control-bibliotecas:
+    hostname: control-bibliotecas
+    restart: always
+    container_name: control-bibliotecas
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1G"
+    build:
+      context: .
+      dockerfile: biblioteca/Dockerfile
+      args:
+       - INIT_RAM=700m
+       - RAM_LIMIT=700m
+    mem_limit: 1G
+    volumes:
+      - /archivos/logs/:/aplicaciones/control-bibliotecas/logs/
+    depends_on:
+      - mariadb
+    networks:
+      redControlBiblioteca:
+        ipv4_address: 192.0.0.3
+networks:
+  redControlBiblioteca:
+    external:
+      name: redControlBiblioteca

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+    http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.8.xsd ">
+    <preConditions>
+        <dbms type="mariadb"/>
+    </preConditions>
+    <changeSet id="2021-04-03_14:23" author="carlos.angeles">
+        <sql>
+            CREATE TABLE Libreria(
+            id SMALLINT UNSIGNED AUTO_INCREMENT NOT NULL,
+            nombre VARCHAR(255) NOT NULL,
+            razonSocial VARCHAR(255) NOT NULL,
+            estado VARCHAR(20) NOT NULL,
+            calle VARCHAR(50) NOT NULL,
+            numeroInterior SMALLINT UNSIGNED,
+            numeroExterior SMALLINT UNSIGNED NOT NULL,
+            PRIMARY KEY(id)
+            )
+        </sql>
+    </changeSet>
+    <changeSet id="2021-04-03_14:24" author="carlos.angeles">
+        <sql>
+            CREATE TABLE Usuario(
+            id INT UNSIGNED AUTO_INCREMENT NOT NULL,
+            nombre VARCHAR(50) NOT NULL,
+            nombreUsuario VARCHAR(50) NOT NULL,
+            password VARCHAR(100) NOT NULL,
+            correo VARCHAR(50),
+            apPaterno VARCHAR(50) NOT NULL,
+            apMaterno VARCHAR(50) NOT NULL,
+            numeroContacto VARCHAR(10) NOT NULL,
+            libreriaId SMALLINT UNSIGNED NOT NULL,
+            puestoId TINYINT UNSIGNED NOT NULL,<!--Valor obtenido del enum correspondiente-->
+            PRIMARY KEY(id),
+            CONSTRAINT fkUsuarioLibreria FOREIGN KEY (libreriaId) REFERENCES Libreria(id)
+            )
+        </sql>
+    </changeSet>
+    <changeSet id="2021-04-03_14:25" author="carlos.angeles">
+        <sql>
+            CREATE TABLE Libro(
+                id INT UNSIGNED AUTO_INCREMENT NOT NULL,
+                libreriaId SMALLINT UNSIGNED NOT NULL,
+                nombre VARCHAR(25) NOT NULL,
+                autor VARCHAR(255) NOT NULL,
+                tipoPastaId TINYINT UNSIGNED NOT NULL DEFAULT 1,
+                editorial VARCHAR(255) NOT NULL,
+                numeroEdicion TINYINT UNSIGNED NOT NULL,
+                numeroPaginas SMALLINT UNSIGNED NOT NULL,
+                ejemplaresDisponibles SMALLINT UNSIGNED NOT NULL,
+                precio DECIMAL(7,3) NOT NULL DEFAULT 0,
+                PRIMARY KEY(id),
+                CONSTRAINT fkLibroLibreria FOREIGN KEY(libreriaId) REFERENCES Libreria(id)
+            )
+        </sql>
+    </changeSet>
+    <changeSet id="2021-04-03_14:26" author="carlos.angeles">
+        <sql>
+            CREATE TABLE Venta(
+            id INT UNSIGNED AUTO_INCREMENT NOT NULL,
+            usuarioId INT UNSIGNED NOT NULL,
+            iva DECIMAL(8,4),
+            total DECIMAL(10,4),
+            PRIMARY KEY(id),
+            CONSTRAINT fkVentaUsuario FOREIGN KEY(usuarioId) REFERENCES Usuario(id)
+            )
+        </sql>
+    </changeSet>
+    <changeSet id="2021-04-03_14:27" author="carlos.angeles">
+        <sql>
+            CREATE TABLE VentaLibro(
+                ventaId INT UNSIGNED NOT NULL,
+                libroId INT UNSIGNED NOT NULL,
+                numeroEjemplares TINYINT UNSIGNED NOT NULL,
+                CONSTRAINT fkVentaLibroVenta FOREIGN KEY(ventaId) REFERENCES Venta(id),
+                CONSTRAINT fkVentaLibroLibro FOREIGN KEY(libroId) REFERENCES Libro(id),
+                PRIMARY KEY(ventaId,libroId)
+            )
+        </sql>
+    </changeSet>
+    <changeSet id="2021-04-03_14:28" author="carlos.angeles">
+        <sql>
+            CREATE TABLE PuestoAccion(
+            puestoId INT UNSIGNED NOT NULL,
+            accionId INT UNSIGNED NOT NULL,
+            PRIMARY KEY(puestoId,accionId)
+            )
+        </sql>
+    </changeSet>
+    <changeSet id="2021-04-03_22:28" author="carlos.angeles">
+        <sqlFile encoding="utf8" path="db/hardcodes/librerias.sql"/>
+    </changeSet>
+    <changeSet id="2021-04-03_22:29" author="carlos.angeles">
+        <sqlFile encoding="utf8" path="db/hardcodes/libros.sql"/>
+    </changeSet>
+    <changeSet id="2021-04-03_22:30" author="carlos.angeles">
+        <sqlFile encoding="utf8" path="db/hardcodes/puesto-accion.sql"/>
+    </changeSet>
+    <changeSet id="2021-04-03_22:31" author="carlos.angeles">
+        <sqlFile encoding="utf8" path="db/hardcodes/usuarios.sql"/>
+    </changeSet>
+</databaseChangeLog>
