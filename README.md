@@ -32,7 +32,8 @@ En este repo he colocado el proyecto  y documentación solicitado en la entrevis
    
    #### Ejecutar el API /login (Metodo POST) 
    
-    #### Ejemplo: http://192.0.0.3:8204/login?nombreUsuario=jangeles&contrasena=arenxt123lab
+    
+    *Ejemplo: http://192.0.0.3:8204/login?nombreUsuario=jangeles&contrasena=arenxt123lab*
     #### El API retornará el valor del token a usar en el header de respuesta: Authorization
     #### A partir de este momento, el token deberá ser colocado en el header: Authorization de las peticiones
     
