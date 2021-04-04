@@ -16,8 +16,8 @@ En este repo he colocado el proyecto  y documentación solicitado en la entrevis
   
   ## Ejecutar Containers
     * docker-compose -f docker.yml up -d  mariadb
-    * docker-compose -f docker.yml up ontrol-bibliotecas
-    * 
+    * docker-compose -f docker.yml up control-bibliotecas
+    
   ### Notas:
     * Decidí no crear un Jenkinsfile, debido a que al ser 2 servicios,  estaría muy sobrado.
     * Obligaría a quien revise y decida ejecutar el codigo a instalar jenkins y los plugins correspondientes.
