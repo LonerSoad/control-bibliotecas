@@ -14,6 +14,7 @@ services:
       retries: 10
     environment:
       MARIADB_ROOT_PASSWORD: jcpassword
+      MARIADB_DATABASE: controlLibrerias 
     networks:
       redControlBiblioteca:
         ipv4_address: 192.0.0.2

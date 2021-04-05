@@ -27,8 +27,8 @@ public class Cipher {
 
         public Cipher(ResourceLoader resourceLoader) {
             try {
-                String privada = new String(IOUtils.toByteArray(resourceLoader.getResource("classpath:security/keys/private_key").getInputStream())).replace("\n", "").replace("-----BEGIN PRIVATE KEY-----", "").replace("-----END PRIVATE KEY-----", "");
-                String publica = new String(IOUtils.toByteArray(resourceLoader.getResource("classpath:security/keys/public").getInputStream())).replaceAll("\n", "").replace("-----BEGIN PUBLIC KEY-----", "").replace("-----END PUBLIC KEY-----", "");
+                String privada = new String(IOUtils.toByteArray(resourceLoader.getResource("classpath:security/keys/control-biblioteca-key").getInputStream())).replace("\n", "").replace("-----BEGIN PRIVATE KEY-----", "").replace("-----END PRIVATE KEY-----", "");
+                String publica = new String(IOUtils.toByteArray(resourceLoader.getResource("classpath:security/keys/control-biblioteca-key.pub").getInputStream())).replaceAll("\n", "").replace("-----BEGIN PUBLIC KEY-----", "").replace("-----END PUBLIC KEY-----", "");
                 PKCS8EncodedKeySpec spec
                         = new PKCS8EncodedKeySpec(Base64.getDecoder().decode(privada));
                 KeyFactory kf = KeyFactory.getInstance("RSA");
@@ -38,7 +38,7 @@ public class Cipher {
                 this.publicKey = kf.generatePublic(specPublic);
                 this.algorithm = SignatureAlgorithm.RS512;
             } catch (IOException | NoSuchAlgorithmException | InvalidKeySpecException ex) {
-                throw new InternalError("No se pueden leer las llaves");
+                throw new InternalError("No se pueden leer las llaves",ex);
             }
         }
 }
